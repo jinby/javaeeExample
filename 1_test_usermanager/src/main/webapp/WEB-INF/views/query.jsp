@@ -6,8 +6,18 @@
 <head>
     <link rel="stylesheet" type="text/css" href="${ctx}/statics/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${ctx}/statics/css/main.css">
+
     <script src="${ctx}/statics/js/jquery-1.9.1.min.js"></script>
+    <script src="http://malsup.github.io/jquery.form.js" type="text/javascript"></script>
     <script src="${ctx}/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+                $("#form").ajaxForm(function(data){
+                    $('#show').html(data);
+                    return false;
+                });
+        });
+    </script>
 </head>
     <body>
             <div class="navbar navbar-default">
@@ -21,7 +31,7 @@
                 </div>
             </div>
             <div class="container">
-                    <form action="${ctx}/researchdo" role="form" method="POST">
+                    <form id="form" action="${ctx}/researchdo" role="form" method="POST">
                     <div class="form-group">
                         <label for="name">客户姓名</label>
                         <input type="text" class="form-control" name="name" placeholder="请输入姓名">
@@ -48,5 +58,7 @@
                     <button class="btn btn-default" type="reset">重置</button>
                     </form>
                 </div>
+
+    <div id="show"></div>
     </body>
 </html>

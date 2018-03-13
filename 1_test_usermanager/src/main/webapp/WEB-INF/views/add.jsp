@@ -17,6 +17,7 @@
                             <li class="active"><a href="#">添加用户</a></li>
                             <li><a href="${ctx}/list">用户列表</a></li>
                             <li><a href="${ctx}/query">高级查询</a></li>
+                        <li><a href="${ctx}/list_ajax">Ajax列表</a></li>
                     </ul>
                 </div>
             </div>

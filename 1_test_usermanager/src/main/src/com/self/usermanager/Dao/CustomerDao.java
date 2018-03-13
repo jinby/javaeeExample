@@ -15,7 +15,7 @@ public interface CustomerDao {
     public Customer find(String id) throws Exception;
     public void delete(Customer customer) throws Exception;
     public int GetTotalCount(CustomerQueryVo customerQueryVo) throws Exception;
-    public PageBean<Customer> findPage(int pageNum, int pageSize, CustomerQueryVo customerQueryVo) throws Exception ;
+    public PageBean<Customer> findPage(int pageIndex, int pageSize, CustomerQueryVo customerQueryVo) throws Exception ;
     public List<Customer> findList(int startIndex, int pageSize, CustomerQueryVo customerQueryVo) throws Exception;
 
 }

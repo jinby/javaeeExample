@@ -90,14 +90,10 @@ public class CustomerDaoImpl implements CustomerDao{
 
         return queryCondition;
     }
+
     public int GetTotalCount(CustomerQueryVo customerQueryVo) throws Exception {
         if ( conn == null || conn.isClosed())
             conn = ConnectionManager.getConnection();
-//        QueryRunner qr = new QueryRunner();
-//        String sql = "SELECT count(*) FROM t_customer";
-//        //调用方法传递结果集的实现类BeanListHandler
-//        //BeanListHandler(Class<T> type)
-//        Object count = qr.query(conn, sql ,new ScalarHandler(1));
 
         QueryRunner qr = new QueryRunner();
         String sql;
@@ -116,11 +112,11 @@ public class CustomerDaoImpl implements CustomerDao{
         return Integer.parseInt(count.toString());
     }
 
-    public PageBean<Customer> findPage(int pageNum, int pageSize,CustomerQueryVo customerQueryVo) throws Exception {
+    public PageBean<Customer> findPage(int pageIndex, int pageSize,CustomerQueryVo customerQueryVo) throws Exception {
         if ( conn == null || conn.isClosed())
             conn = ConnectionManager.getConnection();
 
-        PageBean<Customer> pb = new PageBean<Customer>(pageNum, pageSize, GetTotalCount(customerQueryVo) );
+        PageBean<Customer> pb = new PageBean<Customer>(pageIndex, pageSize, GetTotalCount(customerQueryVo) );
         int startindex = pb.getStartIndex();
         pb.setList(findList(startindex, pageSize, customerQueryVo) );
         return pb;

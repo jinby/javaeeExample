@@ -1,15 +1,15 @@
 package com.self.usermanager.Controller;
 
+import com.alibaba.fastjson.JSON;
 import com.self.usermanager.Bean.Customer;
 import com.self.usermanager.Bean.CustomerQueryVo;
 import com.self.usermanager.Bean.PageBean;
 import com.self.usermanager.Dao.CustomerDao;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
@@ -24,31 +24,10 @@ public class UserManagerController {
     private CustomerDao customerDao;
 
     @RequestMapping({"/add","/"})
-    String index()
-    {
-        return "add";
-    }
+    String index() throws Exception  { return "add";  }
 
-    @RequestMapping({"/list","/list/{pagenum}"})
-    String list(HttpSession session,@PathVariable(value = "pagenum",required = false) Integer pageNum, Model mode) throws Exception
-    {
-        CustomerQueryVo customerQueryVo = null;
-
-        if ( pageNum == null)
-        {
-            pageNum = 1;
-            session.removeAttribute("customerQueryVo");
-        }
-        else
-        {
-            if ( session.getAttribute("customerQueryVo") != null )
-                customerQueryVo = (CustomerQueryVo) session.getAttribute("customerQueryVo");
-        }
-
-        PageBean<Customer> pageBean = customerDao.findPage(pageNum, 20, customerQueryVo);
-        mode.addAttribute("pageBean", pageBean);
-        return "list";
-    }
+    @RequestMapping({"/list"})
+    String list() throws Exception {   return "list";  }
 
     @RequestMapping("/query")
     String query()
@@ -89,12 +68,15 @@ public class UserManagerController {
         return "add_result";
     }
 
-    @RequestMapping("/researchdo")
-    String researchdo(HttpSession session, CustomerQueryVo customerQueryVo, Model model) throws Exception
+    @RequestMapping("/list_ajax")
+    String list_ajax()
+    {return "list_ajax";}
+
+    @RequestMapping("/ajaxQuery")
+    @ResponseBody
+    String ajaxQuery( Integer pageIndex, Integer pageSize,@RequestParam(required=false) CustomerQueryVo customerQueryVo) throws Exception
     {
-        session.setAttribute("customerQueryVo", customerQueryVo );
-        PageBean<Customer> pageBean = customerDao.findPage(1, 20, customerQueryVo);
-        model.addAttribute("pageBean", pageBean);
-        return "list";
+        PageBean<Customer> pageBean = customerDao.findPage(pageIndex.intValue(), pageSize.intValue(), customerQueryVo);
+        return JSON.toJSONString(pageBean);
     }
 }
